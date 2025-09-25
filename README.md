@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="img/cover_rislad.jpg" alt="RIS-LAD Teaser" width="88%">
+  <img src="cover_rislad.jpg" alt="RIS-LAD Teaser" width="88%">
 </p>
 
 <h1 align="center">RIS-LAD: Referring Low-Altitude Drone Image Segmentation</h1>
@@ -48,7 +48,7 @@ RIS-LAD is built with a semi-automatic pipeline that combines high-quality insta
 ## ✨ Highlights (Fig. 1 in paper)
 
 <p align="center">
-  <img src="img/first.png" alt="Fig. 1: RLADIS challenges teaser" width="92%"><br>
+  <img src="first.png" alt="Fig. 1: RLADIS challenges teaser" width="92%"><br>
   <sub><b>Figure 1.</b> RLADIS challenges vs. RRSIS (category/object drift, tiny & dense objects, illumination).</sub>
 </p>
 
@@ -60,7 +60,7 @@ RIS-LAD is built with a semi-automatic pipeline that combines high-quality insta
 ## 🏗️ Annotation Pipeline (Fig. 2)
 
 <p align="center">
-  <img src="img/annotation_pipeline.png" alt="Fig. 2: Semi-automatic annotation pipeline" width="92%"><br>
+  <img src="annotation_pipeline.png" alt="Fig. 2: Semi-automatic annotation pipeline" width="92%"><br>
   <sub><b>Figure 2.</b> Semi-automatic pipeline: SAM-2 masks + MLLM expressions (with crop & location cues) + human refinement.</sub>
 </p>
 
@@ -69,21 +69,21 @@ RIS-LAD is built with a semi-automatic pipeline that combines high-quality insta
 ## 🧠 Method Overview – SAARN (Fig. 3)
 
 <p align="center">
-  <img src="img/saarn_overview.png" alt="Fig. 3: SAARN overall framework" width="92%"><br>
+  <img src="saarn_overview.png" alt="Fig. 3: SAARN overall framework" width="92%"><br>
   <sub><b>Figure 3.</b> SAARN with CDLE and ARFM for semantic-aware, scale-aware reasoning.</sub>
 </p>
 
 ### CDLE Module (Fig. 4)
 
 <p align="center">
-  <img src="img/cdle_block.png" alt="Fig. 4: Category-Dominated Linguistic Enhancement" width="78%"><br>
+  <img src="cdle_block.png" alt="Fig. 4: Category-Dominated Linguistic Enhancement" width="78%"><br>
   <sub><b>Figure 4.</b> CDLE injects class-level cues early; guards against description-induced drift.</sub>
 </p>
 
 ### ARFM Module (Fig. 5)
 
 <p align="center">
-  <img src="img/arfm_block.png" alt="Fig. 5: Adaptive Reasoning Fusion Module" width="78%"><br>
+  <img src="arfm_block.png" alt="Fig. 5: Adaptive Reasoning Fusion Module" width="78%"><br>
   <sub><b>Figure 5.</b> ARFM dynamically weighs global (l), class (c), and descriptive (d) cues across scales.</sub>
 </p>
 
@@ -92,12 +92,12 @@ RIS-LAD is built with a semi-automatic pipeline that combines high-quality insta
 ## 📊 Dataset Characteristics (Table/Fig. in paper)
 
 <p align="center">
-  <img src="img/dataset_comparison.png" alt="Dataset comparison chart (RIS-LAD vs RRSIS)" width="90%"><br>
+  <img src="dataset_comparison.png" alt="Dataset comparison chart (RIS-LAD vs RRSIS)" width="90%"><br>
   <sub><b>Dataset Comparison.</b> RIS-LAD (drone, oblique, night scenes) vs. existing RRSIS datasets.</sub>
 </p>
 
 <p align="center">
-  <img src="img/wordcloud.png" alt="Word cloud of referring expressions" width="70%"><br>
+  <img src="wordcloud.png" alt="Word cloud of referring expressions" width="70%"><br>
   <sub><b>Word Cloud.</b> Linguistic diversity of referring expressions in RIS-LAD.</sub>
 </p>
 
@@ -106,7 +106,7 @@ RIS-LAD is built with a semi-automatic pipeline that combines high-quality insta
 ## 🖼️ Qualitative Comparisons (Fig. in paper)
 
 <p align="center">
-  <img src="img/visual.png" alt="Qualitative comparisons: tiny objects & dense scenes" width="96%"><br>
+  <img src="visual.png" alt="Qualitative comparisons: tiny objects & dense scenes" width="96%"><br>
   <sub><b>Qualitative Results.</b> SAARN vs. prior SOTA on tiny-object and dense same-class cases.</sub>
 </p>
 
@@ -115,7 +115,7 @@ RIS-LAD is built with a semi-automatic pipeline that combines high-quality insta
 ## 📈 Benchmark Results (Table/Fig. in paper)
 
 <p align="center">
-  <img src="img/benchmark_main.png" alt="Main benchmark results (oIoU/mIoU and P@X)" width="90%"><br>
+  <img src="benchmark_main.png" alt="Main benchmark results (oIoU/mIoU and P@X)" width="90%"><br>
   <sub><b>Benchmark.</b> SAARN achieves SOTA on RIS-LAD with gains at strict thresholds (P@0.9).</sub>
 </p>
 
