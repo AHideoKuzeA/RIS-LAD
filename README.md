@@ -16,7 +16,7 @@
 
 <p align="center">
   <b>RIS-LAD</b> is the first fine-grained Referring Image Segmentation benchmark for <b>low-altitude drone (LAD)</b> scenes, featuring <b>13,871</b> image–text–mask triplets.<br>
-  We also introduce <b>SAARN</b> (Semantic-Aware Adaptive Reasoning Network) with <b>CDLE</b> and <b>ARFM</b> to tackle LAD-specific <i>category drift</i> and <i>object drift</i>.
+  We introduce <b>SAARN</b> (Semantic-Aware Adaptive Reasoning Network) with <b>CDLE</b> and <b>ARFM</b> to tackle LAD-specific <i>category drift</i> and <i>object drift</i>.
 </p>
 
 ---
@@ -29,60 +29,94 @@
 
 ---
 
-## ✨ Highlights
+## 🧾 Introduction
 
-<p align="center">
-  <img src="img/lad_vs_rs.jpg" alt="LAD vs conventional RS scenes" width="90%"><br>
-  <sub>Oblique views, low altitude, night scenes, tiny & dense targets.</sub>
-</p>
+Low-altitude drones (typically operating below ~200 m) are increasingly deployed in real-world perception systems thanks to their flexibility and cost-effectiveness. However, most existing referring image segmentation (RIS) research focuses on conventional ground-view scenes or high-altitude remote sensing imagery. These settings differ substantially from low-altitude drone (LAD) views, where perspectives are oblique, objects are tiny and densely packed, and illumination varies widely (including night scenes).
 
-- **New LAD Benchmark** — Oblique views (30°–60°), low altitude (≈30–100 m), multi-lighting (incl. night), **tiny & dense** targets.  
-- **13,871 Triplets** — Image, referring expression, and segmentation mask with human-verified quality.  
-- **SAARN Framework** —  
-  - **CDLE**: early **class-guided** alignment to suppress _category drift_.  
-  - **ARFM**: scale-aware fusion of **global (l)**, **class (c)**, and **descriptive (d)** cues to mitigate _object drift_.  
-- **Strong Baseline** — SOTA on RIS-LAD with clear gains under strict thresholds (e.g., P@0.9).
+To bridge this gap, we present <b>RIS-LAD</b>, a fine-grained benchmark specifically designed for <b>Referring Low-Altitude Drone Image Segmentation (RLADIS)</b>. RIS-LAD offers <b>13,871</b> carefully verified image–text–mask triplets collected from real LAD footage. Beyond providing data, RIS-LAD formalizes two key failure modes frequently observed under LAD settings:
+- <b>Category drift</b>: when tiny targets cause models to latch onto larger, semantically similar objects.
+- <b>Object drift</b>: when crowds of same-class instances lead to confusion about which instance the expression refers to.
 
----
+We further propose <b>SAARN</b> (Semantic-Aware Adaptive Reasoning Network) to tackle these challenges. SAARN introduces:
+- <b>CDLE</b> (Category-Dominated Linguistic Enhancement): injects <i>class-level</i> linguistic cues early in the encoder to anchor visual features to the correct category and suppress category drift.
+- <b>ARFM</b> (Adaptive Reasoning Fusion Module): performs <i>scale-aware</i> fusion of <i>global (l)</i>, <i>class (c)</i>, and <i>descriptive (d)</i> text cues, enabling coarse→fine reasoning and disambiguation among dense same-class instances.
 
-## 🗂️ Dataset Layout (suggested)
-
-```
-RIS-LAD/
-├─ images/                 # RGB images (LAD patches)
-├─ masks/                  # Segmentation masks
-├─ ann/                    # Referring expressions & splits
-│  ├─ train.json
-│  ├─ val.json
-│  └─ test.json
-└─ README_DATASET.md
-```
+RIS-LAD is built with a semi-automatic pipeline that combines high-quality instance masks (prompted SAM-2) and multimodal LLM–generated initial expressions (given cropped instances and location cues), followed by human refinement. Experiments on RIS-LAD show that <b>SAARN</b> achieves state-of-the-art results on core segmentation metrics and yields pronounced gains at stricter localization thresholds (e.g., P@0.9), demonstrating stronger instance-level discrimination under LAD conditions.
 
 ---
 
-## 🧠 Method (SAARN) at a Glance
+## ✨ Highlights (Fig. 1 in paper)
 
 <p align="center">
-  <img src="img/saarn_overview.png" alt="SAARN overall framework" width="92%"><br>
-  <sub>CDLE injects early class-level cues; ARFM performs scale-aware reasoning with global (l), class (c), and descriptive (d) features.</sub>
+  <img src="img/first.png" alt="Fig. 1: RLADIS challenges teaser" width="92%"><br>
+  <sub><b>Figure 1.</b> RLADIS challenges vs. RRSIS (category/object drift, tiny & dense objects, illumination).</sub>
 </p>
 
-### CDLE: Category-Dominated Linguistic Enhancement
-<p align="center">
-  <img src="img/cdle_block.png" alt="CDLE module" width="78%">
-</p>
+- Oblique views (30°–60°), low altitude (≈30–100 m), multi-lighting (incl. night).  
+- Tiny & dense targets; LAD-specific <i>category drift</i> and <i>object drift</i>.  
 
-### ARFM: Adaptive Reasoning Fusion Module
+---
+
+## 🏗️ Annotation Pipeline (Fig. 2)
+
 <p align="center">
-  <img src="img/arfm_block.png" alt="ARFM module" width="78%">
+  <img src="img/annotation_pipeline.png" alt="Fig. 2: Semi-automatic annotation pipeline" width="92%"><br>
+  <sub><b>Figure 2.</b> Semi-automatic pipeline: SAM-2 masks + MLLM expressions (with crop & location cues) + human refinement.</sub>
 </p>
 
 ---
 
-## 📊 Benchmark on RIS-LAD
+## 🧠 Method Overview – SAARN (Fig. 3)
 
 <p align="center">
-  <img src="img/benchmark_bars.png" alt="oIoU/mIoU bar chart" width="88%">
+  <img src="img/saarn_overview.png" alt="Fig. 3: SAARN overall framework" width="92%"><br>
+  <sub><b>Figure 3.</b> SAARN with CDLE and ARFM for semantic-aware, scale-aware reasoning.</sub>
+</p>
+
+### CDLE Module (Fig. 4)
+
+<p align="center">
+  <img src="img/cdle_block.png" alt="Fig. 4: Category-Dominated Linguistic Enhancement" width="78%"><br>
+  <sub><b>Figure 4.</b> CDLE injects class-level cues early; guards against description-induced drift.</sub>
+</p>
+
+### ARFM Module (Fig. 5)
+
+<p align="center">
+  <img src="img/arfm_block.png" alt="Fig. 5: Adaptive Reasoning Fusion Module" width="78%"><br>
+  <sub><b>Figure 5.</b> ARFM dynamically weighs global (l), class (c), and descriptive (d) cues across scales.</sub>
+</p>
+
+---
+
+## 📊 Dataset Characteristics (Table/Fig. in paper)
+
+<p align="center">
+  <img src="img/dataset_comparison.png" alt="Dataset comparison chart (RIS-LAD vs RRSIS)" width="90%"><br>
+  <sub><b>Dataset Comparison.</b> RIS-LAD (drone, oblique, night scenes) vs. existing RRSIS datasets.</sub>
+</p>
+
+<p align="center">
+  <img src="img/wordcloud.png" alt="Word cloud of referring expressions" width="70%"><br>
+  <sub><b>Word Cloud.</b> Linguistic diversity of referring expressions in RIS-LAD.</sub>
+</p>
+
+---
+
+## 🖼️ Qualitative Comparisons (Fig. in paper)
+
+<p align="center">
+  <img src="img/visual.png" alt="Qualitative comparisons: tiny objects & dense scenes" width="96%"><br>
+  <sub><b>Qualitative Results.</b> SAARN vs. prior SOTA on tiny-object and dense same-class cases.</sub>
+</p>
+
+---
+
+## 📈 Benchmark Results (Table/Fig. in paper)
+
+<p align="center">
+  <img src="img/benchmark_main.png" alt="Main benchmark results (oIoU/mIoU and P@X)" width="90%"><br>
+  <sub><b>Benchmark.</b> SAARN achieves SOTA on RIS-LAD with gains at strict thresholds (P@0.9).</sub>
 </p>
 
 | Method | oIoU (Val) | oIoU (Test) | mIoU (Val) | mIoU (Test) |
@@ -92,50 +126,6 @@ RIS-LAD/
 | RMSIN (CVPR’24) | 50.17 | 48.82 | 42.08 | 39.60 |
 | RSRefSeg (IGARSS’25) | 50.04 | 47.71 | 43.42 | 41.16 |
 | **SAARN (ours)** | **51.54** | **49.60** | **44.30** | **41.67** |
-
-> SAARN excels at strict thresholds (e.g., **P@0.9**), indicating better instance disambiguation in dense scenes.
-
----
-
-## 🔎 Why LAD is Different
-
-<p align="center">
-  <img src="img/dataset_comparison.png" alt="Dataset comparison table figure" width="90%">
-</p>
-
-| Factor | Conventional RS | **RIS-LAD (ours)** |
-|---|---|---|
-| Viewpoint | Top-down, fixed | **Oblique (30°–60°), varied** |
-| Altitude | High | **Low (≈30–100 m)** |
-| Illumination | Day | **Day & Night** |
-| Scale/Density | Larger, sparser | **Tiny & dense** |
-
----
-
-## 🎨 Qualitative Examples
-
-<table align="center">
-  <tr>
-    <td align="center" valign="middle">
-      <img src="img/qual_tiny_1.jpg" alt="Tiny-object case A" width="95%"><br>
-      <sub>Tiny-object case A</sub>
-    </td>
-    <td align="center" valign="middle">
-      <img src="img/qual_tiny_2.jpg" alt="Tiny-object case B" width="95%"><br>
-      <sub>Tiny-object case B</sub>
-    </td>
-  </tr>
-  <tr>
-    <td align="center" valign="middle">
-      <img src="img/qual_dense_1.jpg" alt="Dense same-class case A" width="95%"><br>
-      <sub>Dense same-class case A</sub>
-    </td>
-    <td align="center" valign="middle">
-      <img src="img/qual_dense_2.jpg" alt="Dense same-class case B" width="95%"><br>
-      <sub>Dense same-class case B</sub>
-    </td>
-  </tr>
-</table>
 
 ---
 
@@ -149,8 +139,6 @@ RIS-LAD/
 ---
 
 ## 📝 Citation
-
-If you find RIS-LAD or SAARN helpful, please cite:
 
 ```bibtex
 @misc{ye2025risladbenchmarkmodelreferring, 
@@ -168,7 +156,7 @@ If you find RIS-LAD or SAARN helpful, please cite:
 
 ## 📫 Contact & License
 
-- Questions? Open an issue or email **yekai@stu.xmu.edu.cn**  
-- **Dataset**: research use only (see dataset README for terms)  
-- **Code**: license will be provided upon release
+- Issues or questions: **yekai@stu.xmu.edu.cn**  
+- Dataset: research use only (see dataset README)  
+- Code: license will be provided upon release
 
