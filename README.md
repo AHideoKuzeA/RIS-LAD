@@ -1,6 +1,8 @@
+
 <p align="center">
-  <img src="cover_rislad.jpg" alt="RIS-LAD Teaser" width="88%">
+  <img src="main-1.jpg" alt="Fig. 3: SAARN overall framework" width="70%"><br>
 </p>
+
 
 <h1 align="center">RIS-LAD: Referring Low-Altitude Drone Image Segmentation</h1>
 
@@ -45,87 +47,60 @@ RIS-LAD is built with a semi-automatic pipeline that combines high-quality insta
 
 ---
 
-## ✨ Highlights (Fig. 1 in paper)
+## ✨ Highlights
 
 <p align="center">
-  <img src="first.png" alt="Fig. 1: RLADIS challenges teaser" width="92%"><br>
+  <img src="first-1.jpg" alt="Fig. 1: RLADIS challenges teaser" width="45%"><br>
   <sub><b>Figure 1.</b> RLADIS challenges vs. RRSIS (category/object drift, tiny & dense objects, illumination).</sub>
 </p>
 
-- Oblique views (30°–60°), low altitude (≈30–100 m), multi-lighting (incl. night).  
-- Tiny & dense targets; LAD-specific <i>category drift</i> and <i>object drift</i>.  
+- <b>Low-altitude & oblique views</b> (≈30–100 m, 30°–60°) → strong perspective change & foreshortening.
+
+- <b>Tiny & dense targets</b> → easy confusion among many same-class instances.
+
+- <b>Variable illumination</b> (incl. night) → distribution shift from standard RS/RIS datasets.
+
+- <b>Category drift</b>: tiny targets bias the model to large, semantically similar objects.
+
+- <b>Object drift</b>: crowded same-class instances hinder precise instance selection.
 
 ---
 
-## 🏗️ Annotation Pipeline (Fig. 2)
+## 📊 Dataset Characteristics
 
-<p align="center">
-  <img src="annotation_pipeline.png" alt="Fig. 2: Semi-automatic annotation pipeline" width="92%"><br>
-  <sub><b>Figure 2.</b> Semi-automatic pipeline: SAM-2 masks + MLLM expressions (with crop & location cues) + human refinement.</sub>
-</p>
+| Dataset            | Image Source              | Shooting Angle | Nighttime Scene |
+| ------------------ | ------------------------- | -------------- | --------------- |
+| RefDIOR            | Google Earth              | fixed          | ✗               |
+| NWPU-Refer         | Google Earth              | fixed          | ✗               |
+| RISBench           | Google Earth, GF-2, JL-1  | fixed          | ✗               |
+| RefSegRS           | Helicopter (above 1000 m) | fixed          | ✗               |
+| RRSIS-D            | Google Earth              | fixed          | ✗               |
+| **RIS-LAD (ours)** | **Drone (30–100 m)**      | **30°–60°**    | **✓**           |
+
+---
+## 📈 Benchmark Results
+
+| Method           | Publication    | oIoU (Val) | oIoU (Test) | mIoU (Val) | mIoU (Test) |
+| ---------------- | -------------- | ---------: | ----------: | ---------: | ----------: |
+| LAVT             | CVPR 2022      |      44.03 |       41.97 |      32.25 |       30.14 |
+| ASDA             | MM 2024        |      38.70 |       37.53 |      35.46 |       33.33 |
+| VATEX            | WACV 2025      |      24.83 |       24.27 |      20.32 |       18.53 |
+| LGCE             | IEEE TGRS 2024 |      41.72 |       40.75 |      27.68 |       26.17 |
+| FIANet           | IEEE TGRS 2024 |      45.24 |       43.39 |      39.61 |       37.44 |
+| RMSIN            | CVPR 2024      |      50.17 |       48.82 |      42.08 |       39.60 |
+| RSRefSeg         | IGARSS 2025    |      50.04 |       47.71 |      43.42 |       41.16 |
+| CADFormer        | JSTARS 2025    |      47.37 |       46.47 |      41.36 |       39.32 |
+| **SAARN (ours)** | —              |  **51.54** |   **49.60** |  **44.30** |   **41.67** |
 
 ---
 
-## 🧠 Method Overview – SAARN (Fig. 3)
+## 🖼️ Qualitative Comparisons
 
 <p align="center">
-  <img src="saarn_overview.png" alt="Fig. 3: SAARN overall framework" width="92%"><br>
-  <sub><b>Figure 3.</b> SAARN with CDLE and ARFM for semantic-aware, scale-aware reasoning.</sub>
-</p>
-
-### CDLE Module (Fig. 4)
-
-<p align="center">
-  <img src="cdle_block.png" alt="Fig. 4: Category-Dominated Linguistic Enhancement" width="78%"><br>
-  <sub><b>Figure 4.</b> CDLE injects class-level cues early; guards against description-induced drift.</sub>
-</p>
-
-### ARFM Module (Fig. 5)
-
-<p align="center">
-  <img src="arfm_block.png" alt="Fig. 5: Adaptive Reasoning Fusion Module" width="78%"><br>
-  <sub><b>Figure 5.</b> ARFM dynamically weighs global (l), class (c), and descriptive (d) cues across scales.</sub>
-</p>
-
----
-
-## 📊 Dataset Characteristics (Table/Fig. in paper)
-
-<p align="center">
-  <img src="dataset_comparison.png" alt="Dataset comparison chart (RIS-LAD vs RRSIS)" width="90%"><br>
-  <sub><b>Dataset Comparison.</b> RIS-LAD (drone, oblique, night scenes) vs. existing RRSIS datasets.</sub>
-</p>
-
-<p align="center">
-  <img src="wordcloud.png" alt="Word cloud of referring expressions" width="70%"><br>
-  <sub><b>Word Cloud.</b> Linguistic diversity of referring expressions in RIS-LAD.</sub>
-</p>
-
----
-
-## 🖼️ Qualitative Comparisons (Fig. in paper)
-
-<p align="center">
-  <img src="visual.png" alt="Qualitative comparisons: tiny objects & dense scenes" width="96%"><br>
+  <img src="visual-1.jpg" alt="Qualitative comparisons: tiny objects & dense scenes" width="80%"><br>
   <sub><b>Qualitative Results.</b> SAARN vs. prior SOTA on tiny-object and dense same-class cases.</sub>
 </p>
 
----
-
-## 📈 Benchmark Results (Table/Fig. in paper)
-
-<p align="center">
-  <img src="benchmark_main.png" alt="Main benchmark results (oIoU/mIoU and P@X)" width="90%"><br>
-  <sub><b>Benchmark.</b> SAARN achieves SOTA on RIS-LAD with gains at strict thresholds (P@0.9).</sub>
-</p>
-
-| Method | oIoU (Val) | oIoU (Test) | mIoU (Val) | mIoU (Test) |
-|---|---:|---:|---:|---:|
-| LAVT (CVPR’22) | 44.03 | 41.97 | 32.25 | 30.14 |
-| ASDA (MM’24) | 38.70 | 37.53 | 35.46 | 33.33 |
-| RMSIN (CVPR’24) | 50.17 | 48.82 | 42.08 | 39.60 |
-| RSRefSeg (IGARSS’25) | 50.04 | 47.71 | 43.42 | 41.16 |
-| **SAARN (ours)** | **51.54** | **49.60** | **44.30** | **41.67** |
 
 ---
 
